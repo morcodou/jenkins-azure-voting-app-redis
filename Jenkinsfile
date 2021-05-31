@@ -10,7 +10,6 @@ pipeline {
 
         stage('START THE APPLICATION ON 8000') {
             steps {
-                pwsh 'docker rmi $(docker images -q) -f'
                 pwsh 'docker-compose up'
             }
             post {
