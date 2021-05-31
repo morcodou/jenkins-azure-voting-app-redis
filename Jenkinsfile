@@ -23,8 +23,7 @@ pipeline {
 
         stage('START THE APPLICATION ON 8000') {
             steps {
-                pwsh 'docker compose up -d'
-                pwsh './scripts/test_container.ps1'
+                pwsh 'docker-compose up & ./scripts/test_container.ps1'
             }
             post {
                 success {
@@ -36,15 +35,15 @@ pipeline {
             }
         }
 
-        stage('RUN TESTS') {
-            steps {
-                pwsh 'pytest ./tests/test_sample.py'
-            }
-        }
+        // stage('RUN TESTS') {
+        //     steps {
+        //         pwsh 'pytest ./tests/test_sample.py'
+        //     }
+        // }
 
         stage('STOP THE APPLICATION ON 8000') {
             steps {
-                pwsh 'docker compose down'
+                pwsh 'docker-compose down'
             }
         }
     }
