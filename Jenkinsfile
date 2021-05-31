@@ -23,7 +23,7 @@ pipeline {
 
         stage('START THE APPLICATION ON 8000') {
             steps {
-                pwsh 'docker-compose up & ./scripts/test_container.ps1'
+                pwsh 'docker-compose up'
             }
             post {
                 success {
@@ -41,10 +41,10 @@ pipeline {
         //     }
         // }
 
-        stage('STOP THE APPLICATION ON 8000') {
-            steps {
-                pwsh 'docker-compose down'
-            }
-        }
+        // stage('STOP THE APPLICATION ON 8000') {
+        //     steps {
+        //         pwsh 'docker-compose down'
+        //     }
+        // }
     }
 }
