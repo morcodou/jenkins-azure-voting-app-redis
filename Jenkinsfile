@@ -2,24 +2,50 @@ pipeline {
     agent any
 
     stages {
-        
-        stage('Verify branch') {
+        stage('VERIFY BRANCH') {
             steps {
                 echo "$GIT_BRANCH"
             }
-        }       
+        }
 
-        stage('Docker build') {
+        stage('DOCKER BUILD') {
             steps {
                 pwsh 'docker images -a'
-                pwsh """
+                pwsh '''
                   cd azure-vote/
                   docker images -a
                   docker build -t jenkins-pipeline .
                   docker images -a
                   cd ..
-                """
+                '''
             }
-        } 
+        }
+
+        stage('START THE APPLICATION ON 8000') {
+            steps {
+                pwsh 'docker compose up -d'
+                pwsh './scripts/test_container.ps1'
+            }
+            post {
+                success {
+                    echo 'The application started successfully :)'
+                }
+                failure {
+                    echo 'The application failed to start :('
+                }
+            }
+        }
+
+        stage('RUN TESTS') {
+            steps {
+                pwsh 'pytest ./tests/test_sample.py'
+            }
+        }
+
+        stage('STOP THE APPLICATION ON 8000') {
+            steps {
+                pwsh 'docker compose down'
+            }
+        }
     }
 }
