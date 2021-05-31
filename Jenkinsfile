@@ -8,18 +8,18 @@ pipeline {
             }
         }
 
-        stage('DOCKER BUILD') {
-            steps {
-                pwsh 'docker images -a'
-                pwsh '''
-                  cd azure-vote/
-                  docker images -a
-                  docker build -t jenkins-pipeline .
-                  docker images -a
-                  cd ..
-                '''
-            }
-        }
+        // stage('DOCKER BUILD') {
+        //     steps {
+        //         pwsh 'docker images -a'
+        //         pwsh '''
+        //           cd azure-vote/
+        //           docker images -a
+        //           docker build -t jenkins-pipeline .
+        //           docker images -a
+        //           cd ..
+        //         '''
+        //     }
+        // }
 
         stage('START THE APPLICATION ON 8000') {
             steps {
