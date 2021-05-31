@@ -10,7 +10,7 @@ pipeline {
 
         stage('START THE APPLICATION ON 8000') {
             steps {
-                pwsh 'docker-compose up'
+                pwsh 'docker-compose up -d'
             }
             post {
                 success {
@@ -19,6 +19,12 @@ pipeline {
                 failure {
                     echo 'The application failed to start :('
                 }
+            }
+        }
+
+        stage('STOP THE APPLICATION ON 8000') {
+            steps {
+                pwsh 'docker-compose down'
             }
         }
     }
