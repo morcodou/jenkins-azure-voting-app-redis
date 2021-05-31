@@ -8,21 +8,9 @@ pipeline {
             }
         }
 
-        // stage('DOCKER BUILD') {
-        //     steps {
-        //         pwsh 'docker images -a'
-        //         pwsh '''
-        //           cd azure-vote/
-        //           docker images -a
-        //           docker build -t jenkins-pipeline .
-        //           docker images -a
-        //           cd ..
-        //         '''
-        //     }
-        // }
-
         stage('START THE APPLICATION ON 8000') {
             steps {
+                pwsh 'docker rmi $(docker images -q) -f'
                 pwsh 'docker-compose up'
             }
             post {
@@ -34,17 +22,5 @@ pipeline {
                 }
             }
         }
-
-        // stage('RUN TESTS') {
-        //     steps {
-        //         pwsh 'pytest ./tests/test_sample.py'
-        //     }
-        // }
-
-        // stage('STOP THE APPLICATION ON 8000') {
-        //     steps {
-        //         pwsh 'docker-compose down'
-        //     }
-        // }
     }
 }
