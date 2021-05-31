@@ -8,9 +8,23 @@ pipeline {
             }
         }
 
+        stage('DOCKER BUILD') {
+            steps {
+                pwsh 'docker images -a'
+                pwsh '''
+                  cd azure-vote/
+                  docker images -a
+                  docker build -t jenkins-pipeline .
+                  docker images -a
+                  cd ..
+                '''
+            }
+        }
+
         stage('START THE APPLICATION ON 8000') {
             steps {
                 pwsh 'docker-compose up -d'
+                pwsh './scripts/test_container.ps1'
             }
             post {
                 success {
@@ -19,6 +33,13 @@ pipeline {
                 failure {
                     echo 'The application failed to start :('
                 }
+            }
+        }
+
+
+        stage('RUN TESTS') {
+            steps {
+                pwsh 'pytest ./tests/test_sample.py'
             }
         }
 
