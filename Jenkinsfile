@@ -49,12 +49,14 @@ pipeline {
         }
 
         stage('PUSH THE CONTAINER') {
-            echo "Workspace is $WORKSPACE"
-            dir("$WORKSPACE/azure-vote") {
-                steps {
-                    docker.withRegistry('https://index.docker.io/v1/', 'DockerHub') {
-                        def appImage = docker.build('morcodou/jenkins-course:latest')
-                        appImage.push()
+            steps {
+                echo "Workspace is $WORKSPACE"
+                dir("$WORKSPACE/azure-vote") {
+                    script {
+                        docker.withRegistry('https://index.docker.io/v1/', 'DockerHub') {
+                            def appImage = docker.build('morcodou/jenkins-course:latest')
+                            appImage.push()
+                        }
                     }
                 }
             }
